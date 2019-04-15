@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Results</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Uniforme</h2>
+        <div id="uni"></div>
+    </div>
+
+    <div class="container">
+        <h2>Triangular</h2>
+        <div id="tri"></div>
+    </div>
+
+    <div class="container">
+        <h2>Exponencial</h2>
+        <div id="exp"></div>
+    </div>
+
+    <div class="container">
+        <h2>Normal</h2>
+        <div id="normal"></div>
+    </div>
+
+    <script>
+        var uni = uniform(50, 200, 10000)
+        var triangular = triangular(10, 100, 30, 10000)
+        var expo = exponential(10, 20, 10000)
+        var normal = normal(5, 10000)
+
+        var trace = {
+            x: uni,
+            type: 'histogram',
+        };
+        var data = [trace];
+        Plotly.newPlot('uni', data);
+
+        var trace = {
+            x: triangular,
+            type: 'histogram',
+        };
+        var data = [trace];
+        Plotly.newPlot('tri', data);
+
+        var trace = {
+            x: expo,
+            type: 'histogram',
+        };
+        var data = [trace];
+        Plotly.newPlot('exp', data);
+
+        var trace = {
+            x: normal,
+            type: 'histogram',
+        };
+        var data = [trace];
+        Plotly.newPlot('normal', data);
+
+        function uniform(a, b, qtd) {
+            let results = []
+            for (let i = 0; i < qtd; i++) {
+                results.push(Math.random() * (b - a))
+            }
+            return results
+        }
+
+        function triangular(a, b, c, qtd) {
+            let results = []
+            for (let i = 0; i < qtd; i++) {
+                let rand = Math.random()
+                if (rand < ((c - a) / (b - a))) {
+                    let v = a + Math.sqrt(rand * (c - a) * (b - a))
+                    results.push(v)
+                } else {
+                    let v = b - Math.sqrt((1 - rand) * (b - c) * (b - a))
+                    results.push(v)
+                }
+            }
+            return results;
+        }
+
+        function exponential(limitInf, mean, qtd) {
+            let results = []
+            let alfa = 1.0 / (mean - limitInf)
+            for (let i = 0; i < qtd; i++) {
+                let rand = Math.random()
+                let v = limitInf - (1 / alfa) * Math.log(rand)
+                results.push(v)
+            }
+            return results
+        }
+
+        function normal(mean, qtd) {
+            let sum = 0
+            let desvio = 0
+            let results = []
+            for (let i = 0; i < qtd; i++) {
+                let Z = calcZ(mean)
+                sum += Z
+                desvio += (Z * Z)
+                results.push(Z)
+            }
+
+            return results;
+        }
+
+        function calcZ(mean) {
+            let delta = 2
+            let sum12 = 0
+            for (let i = 0; i < 12; i++) {
+                sum12 += Math.random()
+            }
+
+            return mean + delta * (sum12 - 6.0);
+        }
+    </script>
+</body>
+
+</html>
