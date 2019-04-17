@@ -14,62 +14,148 @@
 <body>
     <div class="container">
         <h2>Uniforme</h2>
+        <form class="formgroup">
+            <label>A:</label>
+            <input id="uniA" type="number">
+
+            <label>B:</label>
+            <input id="uniB" type="number">
+
+            <label>Qtd:</label>
+            <input id="uniQtd" type="number">
+
+            <input type="button" value="Gerar" onclick="uni();" />
+        </form>
         <div id="uni"></div>
     </div>
 
     <div class="container">
         <h2>Triangular</h2>
+        <form class="formgroup">
+            <label>A:</label>
+            <input id="triA" type="number">
+
+            <label>B:</label>
+            <input id="triB" type="number">
+
+            <label>C:</label>
+            <input id="triC" type="number">
+
+            <label>Qtd:</label>
+            <input id="triQtd" type="number">
+
+            <input type="button" value="Gerar" onclick="tri();" />
+        </form>
         <div id="tri"></div>
     </div>
 
     <div class="container">
         <h2>Exponencial</h2>
+        <form class="formgroup">
+            <label>Limite Inferior:</label>
+            <input id="expLim" type="number">
+
+            <label>Média:</label>
+            <input id="expMedia" type="number">
+
+            <label>Qtd:</label>
+            <input id="expQtd" type="number">
+
+            <input type="button" value="Gerar" onclick="expo();" />
+        </form>
         <div id="exp"></div>
     </div>
 
     <div class="container">
         <h2>Normal</h2>
+        <form class="formgroup">
+            <label>Média:</label>
+            <input id="normMedia" type="number">
+
+            <label>Qtd:</label>
+            <input id="normQtd" type="number">
+
+            <input type="button" value="Gerar" onclick="norm();" />
+        </form>
         <div id="normal"></div>
     </div>
 
+    <div id="test"></div>
+
     <script>
-        var uni = uniform(50, 200, 10000)
-        var triangular = triangular(10, 100, 30, 10000)
-        var expo = exponential(10, 20, 10000)
-        var normal = normal(5, 10000)
+        // var uni = uniform(50, 200, 10000)
+        // var triangular = triangular(10, 100, 30, 10000)
+        // var expo = exponential(10, 20, 10000)
+        // var normal = normal(5, 10000)
 
-        var trace = {
-            x: uni,
-            type: 'histogram',
-        };
-        var data = [trace];
-        Plotly.newPlot('uni', data);
+        function uni() {
+            var a = parseFloat(document.getElementById("uniA").value)
+            var b = parseFloat(document.getElementById("uniB").value)
+            var qtd = document.getElementById("uniQtd").value
 
-        var trace = {
-            x: triangular,
-            type: 'histogram',
-        };
-        var data = [trace];
-        Plotly.newPlot('tri', data);
+            var uni = uniform(a, b, qtd)
 
-        var trace = {
-            x: expo,
-            type: 'histogram',
-        };
-        var data = [trace];
-        Plotly.newPlot('exp', data);
+            var trace1 = {
+                type: 'histogram',
+                x: uni
+            };
 
-        var trace = {
-            x: normal,
-            type: 'histogram',
-        };
-        var data = [trace];
-        Plotly.newPlot('normal', data);
+            var data = [trace1];
+
+            Plotly.newPlot('uni', data, { responsive: true });
+
+        }
+
+        function tri() {
+            var a = parseFloat(document.getElementById("triA").value)
+            var b = parseFloat(document.getElementById("triB").value)
+            var c = parseFloat(document.getElementById("triC").value)
+            var qtd = document.getElementById("triQtd").value
+
+            var tri = triangular(a, b, c, qtd)
+
+            var trace = {
+                x: tri,
+                type: 'histogram',
+            };
+            var data = [trace];
+            Plotly.newPlot('tri', data);
+        }
+
+        function expo() {
+            var a = parseFloat(document.getElementById("expLim").value)
+            var b = parseFloat(document.getElementById("expMedia").value)
+            var qtd = document.getElementById("expQtd").value
+
+            var exp = exponential(a, b, qtd)
+
+            var trace = {
+                x: exp,
+                type: 'histogram',
+            };
+            var data = [trace];
+            Plotly.newPlot('exp', data);
+        }
+
+        function norm() {
+            var a = parseFloat(document.getElementById("normMedia").value)
+            var qtd = document.getElementById("normQtd").value
+
+            var n = normal(a, qtd)
+
+            var trace = {
+                x: n,
+                type: 'histogram',
+            };
+            var data = [trace];
+            Plotly.newPlot('normal', data);
+        }
 
         function uniform(a, b, qtd) {
             let results = []
             for (let i = 0; i < qtd; i++) {
-                results.push(Math.random() * (b - a))
+                let v = (Math.random() * (b - a)) + a
+                results.push(v)
             }
             return results
         }

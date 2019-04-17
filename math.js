@@ -1,7 +1,7 @@
 function uniform(a, b, qtd) {
     let results = []
     for (let i = 0; i < qtd; i++) {
-        results.push(Math.random() * (b - a))
+        results.push((Math.random() * (b - a)) + a)
     }
     return results
 }
